@@ -131,7 +131,8 @@ std::vector<glm::dvec3> FieldLineGenerator::generateSeedPoints(
         double z = sin(theta) * radius;
         
         // Scale by particle visual radius and offset by particle position
-        glm::dvec3 point = source.position + source.visualRadius * glm::dvec3(x, y, z);
+        // Cast visualRadius (float) to double for dvec3 multiplication
+        glm::dvec3 point = source.position + static_cast<double>(source.visualRadius) * glm::dvec3(x, y, z);
         seedPoints.push_back(point);
     }
     

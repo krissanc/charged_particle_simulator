@@ -1,6 +1,6 @@
 #include "FieldLineRenderer.hpp"
 #include "engine/core/Logger.hpp"
-#include <glad/glad.h>
+#include <glad/gl.h>
 #include <algorithm>
 #include <cmath>
 

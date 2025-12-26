@@ -1,4 +1,4 @@
-#include <glad/glad.h>
+#include <glad/gl.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -67,8 +67,8 @@ int main() {
         return -1;
     }
     
-    // Configure OpenGL context
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    // Configure OpenGL context (3.3 Core to match GLAD generation)
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
@@ -83,11 +83,11 @@ int main() {
     
     glfwMakeContextCurrent(window);
     
-    // Initialize GLEW
-    glewExperimental = GL_TRUE;
-    GLenum err = glewInit();
-    if (err != GLEW_OK) {
-        LOG_ERROR("Failed to initialize GLEW: " + std::string(reinterpret_cast<const char*>(glewGetErrorString(err))));
+    // Initialize GLAD (OpenGL loader)
+    // GLAD loads all OpenGL function pointers using glfwGetProcAddress
+    // This must be called after creating the OpenGL context (uses GLAD2 API)
+    if (!gladLoadGL((GLADloadfunc)glfwGetProcAddress)) {
+        LOG_ERROR("Failed to initialize GLAD");
         glfwTerminate();
         return -1;
     }

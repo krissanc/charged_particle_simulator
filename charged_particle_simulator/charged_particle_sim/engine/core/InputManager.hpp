@@ -8,6 +8,7 @@ class Camera;
 class DragController;
 class ParticlePicker;
 class RayCaster;
+struct Particle;  // Particle is a struct
 
 /**
  * Input Manager
@@ -33,7 +34,7 @@ public:
         Camera* camera,
         DragController* dragController,
         ParticlePicker* particlePicker,
-        std::vector<class Particle>* particles
+        std::vector<Particle>* particles
     );
     
     /**
@@ -47,7 +48,7 @@ private:
     Camera* m_camera;
     DragController* m_dragController;
     ParticlePicker* m_picker;
-    std::vector<class Particle>* m_particles;
+    std::vector<Particle>* m_particles;
     
     // Mouse state
     bool m_leftMousePressed;

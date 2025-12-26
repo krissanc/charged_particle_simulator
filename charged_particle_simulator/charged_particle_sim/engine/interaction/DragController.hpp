@@ -4,6 +4,7 @@
 #include <vector>
 #include <chrono>
 #include "engine/physics/Particle.hpp"
+#include "engine/interaction/RayCaster.hpp"  // For Ray type
 
 /**
  * Drag Controller
@@ -104,7 +105,4 @@ private:
         glm::dvec3& intersection
     ) const;
 };
-
-// Forward declaration
-struct Ray;
 

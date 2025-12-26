@@ -107,8 +107,8 @@ void InputManager::mouseButtonCallback(GLFWwindow* window, int button, int actio
                     projection
                 );
                 
-                // Pick particle
-                PickResult result = manager->m_picker->pick(ray, *manager->m_particles);
+                // Pick particle (static method)
+                PickResult result = ParticlePicker::pick(ray, *manager->m_particles);
                 
                 if (result.hit && result.particleIndex >= 0 && 
                     result.particleIndex < static_cast<int>(manager->m_particles->size())) {

@@ -39,7 +39,9 @@ find_package(glm QUIET)
 
 # Include directories - adjust paths based on your project structure
 # Assuming dependencies are in the parent directory
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/glad)
+# Note: For <glad/gl.h>, we need the glad_new/include directory
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/glad_new/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../dependencies)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/GLFW)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/glm)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/KHR)
@@ -165,6 +167,18 @@ set(MATH_SOURCES
     engine/math/Integrators.cpp
 )
 
+# GLAD implementation file (GLAD2 format from glad_new folder)
+# Note: Using GLAD2 with <glad/gl.h> include format
+set(GLAD_IMPL_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/glad_new/src/gl.c")
+if(EXISTS "${GLAD_IMPL_FILE}")
+    message(STATUS "Found GLAD implementation file: ${GLAD_IMPL_FILE}")
+    list(APPEND CORE_SOURCES "${GLAD_IMPL_FILE}")
+else()
+    message(WARNING "GLAD implementation file (gl.c) not found!")
+    message(WARNING "Please generate it from https://glad.dav1d.de/ and place it in dependencies/glad_new/src/")
+    message(WARNING "See GLAD_SETUP.md for detailed instructions")
+endif()
+
 set(CORE_HEADERS
     engine/core/Logger.hpp
     engine/core/Constants.hpp
@@ -193,12 +207,14 @@ file(TO_CMAKE_PATH "${DEPS_DIR}" DEPS_DIR)
 set(INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
-file(TO_CMAKE_PATH "${DEPS_DIR}/glad" GLAD_DIR)
+# For <glad/gl.h> includes, we need the glad_new/include directory
+file(TO_CMAKE_PATH "${DEPS_DIR}/glad_new/include" GLAD_INCLUDE_DIR)
+file(TO_CMAKE_PATH "${DEPS_DIR}" DEPS_INCLUDE_DIR)
 file(TO_CMAKE_PATH "${DEPS_DIR}/GLFW" GLFW_LOCAL_DIR)
 file(TO_CMAKE_PATH "${DEPS_DIR}/glm" GLM_DIR)
 file(TO_CMAKE_PATH "${DEPS_DIR}/KHR" KHR_DIR)
 
-list(APPEND INCLUDE_DIRS "${GLAD_DIR}" "${GLFW_LOCAL_DIR}" "${GLM_DIR}" "${KHR_DIR}")
+list(APPEND INCLUDE_DIRS "${GLAD_INCLUDE_DIR}" "${DEPS_INCLUDE_DIR}" "${GLFW_LOCAL_DIR}" "${GLM_DIR}" "${KHR_DIR}")
 
 if(GLFW_INCLUDE_DIR)
     file(TO_CMAKE_PATH "${GLFW_INCLUDE_DIR}" GLFW_INCLUDE_DIR)
